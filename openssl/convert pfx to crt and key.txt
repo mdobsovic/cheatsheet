@@ -1,0 +1,8 @@
+# Get private key from PFX:
+openssl pkcs12 -in filename.pfx -nocerts -out filename.key
+
+# Remove password from filename.key
+openssl rsa -in filename.key -out unencrypted.key
+
+# Get certificate from PFX:
+openssl pkcs12 -in filename.pfx -clcerts -nokeys -out filename.crt
