@@ -1,0 +1,30 @@
+yum -y install rpm-build git autoconf automake libtool pam-devel openssl-devel cyrus-sasl-devel make
+yum -y install MariaDB-devel MariaDB-shared --disablerepo=AppStream
+yum -y install libnss-mysql
+
+vi /etc/nsswitch.conf
+
+...
+
+passwd:      sss files systemd mysql
+shadow:     files sss mysql
+group:       sss files systemd mysql
+
+...
+
+-------------------------
+
+chmod 600 /etc/libnss-mysql*.cfg
+vi /etc/libnss-mysql.cfg
+nakonfigurovat pristup k databaze  (nss_pam)
+vi /etc/libnss-mysql-root.cfg
+nakonfigurovat pristup k databaze  (nss_pam_shadow)
+
+-- disablovat mariadb.repo
+
+git clone https://github.com/NigelCunningham/pam-MySQL.git
+cd pam-MySQL
+autoreconf -f -i
+./configure --with-cyrus-sasl2 --with-openssl --with-pam-mods-dir=/lib64/security --disable-dependency-tracking
+make
+make install

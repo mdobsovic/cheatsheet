@@ -11,6 +11,7 @@ chmod 600 ~/.ssh/authorized_keys
 #disable SELinux
 setenforce 0
 sed -i s/^SELINUX=.*/SELINUX=disabled/g /etc/sysconfig/selinux
+sed -i s/^SELINUX=.*/SELINUX=disabled/g /etc/selinux/config
 
 # nice PS1 prompt
 echo 'export PS1="\[\e[00;32m\][\[\e[0m\]\[\e[00;37m\] \[\e[0m\]\[\e[00;36m\]\u@\[\e[0m\]\[\e[00;35m\]\H\[\e[0m\]\[\e[00;37m\]: \[\e[0m\]\[\e[00;32m\]\w\[\e[0m\]\[\e[00;37m\] \[\e[0m\]\[\e[00;32m\]]\[\e[0m\]\[\e[00;37m\]\n\[\e[0m\]\[\e[00;31m\]\\$\[\e[0m\]\[\e[00;37m\] \[\e[0m\]"' >> /etc/bashrc
@@ -40,7 +41,7 @@ iptables -N allow_services
 iptables -A allow_services -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-ipatbles -A INPUT -j dflt_drop
+iptables -A INPUT -j dflt_drop
 iptables -A INPUT -p icmp -j ACCEPT
 iptables -A INPUT -j allow_services
 iptables -A FORWARD -j DROP

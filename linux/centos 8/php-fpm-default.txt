@@ -1,0 +1,39 @@
+[USERNAME]
+listen = /www/sockets/USERNAME.socket
+listen.backlog = 128
+listen.allowed_clients = 127.0.0.1
+user = USERNAME
+group = USERNAME
+listen.owner = USERNAME
+listen.group = USERNAME
+listen.mode = 0666
+pm = ondemand
+pm.max_children = 5
+pm.process_idle_timeout = 10s
+pm.min_spare_servers = 1
+pm.max_spare_servers = 1
+pm.max_requests = 500
+slowlog = /www/USERNAME/log/php/slow.log
+rlimit_files = 102400
+
+php_admin_flag[log_errors] = On
+php_admin_flag[allow_url_include] = Off
+
+php_admin_value[error_log] = /www/USERNAME/log/php/error.log
+php_admin_value[open_basedir] = /www/USERNAME
+php_admin_value[upload_tmp_dir] = /www/USERNAME/tmp
+php_admin_value[session.save_handler] = files
+php_admin_value[session.save_path] = /www/USERNAME/sessions
+php_admin_value[memory_limit] = 128M
+php_admin_value[post_max_size] = 8M
+php_admin_value[upload_max_filesize] = 8M
+php_admin_value[disable_functions] = mail,exec
+php_admin_value[user_dir] = www
+php_admin_value[variables_order] = EGPCS
+
+php_flag[short_open_tag] = Off
+php_flag[allow_url_fopen] = Off
+php_flag[display_errors] = On
+php_flag[html_errors] = On
+
+php_value[error_reporting] = 6135

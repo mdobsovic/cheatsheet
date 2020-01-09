@@ -1,8 +1,11 @@
+read -p "Enter file name: " filename
+read -sp "Enter PFX password: " password; echo
+
 # Get private key from PFX:
-openssl pkcs12 -in filename.pfx -nocerts -out filename.key
+openssl pkcs12 -in ${filename}.pfx -nocerts -out ${filename}-enc.key -passin file:<(echo -n $password) -passout file:<(echo -n $password)
 
 # Remove password from filename.key
-openssl rsa -in filename.key -out unencrypted.key
+openssl rsa -in ${filename}-enc.key -out ${filename}.key -passin file:<(echo -n $password)
 
 # Get certificate from PFX:
-openssl pkcs12 -in filename.pfx -clcerts -nokeys -out filename.crt
+openssl pkcs12 -in ${filename}.pfx -clcerts -nokeys -out ${filename}.crt -passin file:<(echo -n $password)

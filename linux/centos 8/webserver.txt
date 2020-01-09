@@ -1,0 +1,36 @@
+# run initial before...
+
+dnf install libnss-mysql
+
+cat > /etc/dnf.repos.d/mariadb.repo <<EOF
+# MariaDB 10.4 CentOS repository list
+[mariadb]
+name = MariaDB
+baseurl = http://dnf.mariadb.org/10.4/centos8-amd64
+gpgkey=https://dnf.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+EOF
+
+dnf -y update
+dnf -y install boost-program-options
+dnf -y install MariaDB-server MariaDB-client --disablerepo=AppStream 
+systemctl enable mariadb
+systemctl start mariadb
+/usr/bin/mysql_secure_installation
+
+dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+dnf -y update
+dnf -y install httpd mod_ssl
+dnf -y module enable php:remi-7.4
+dnf -y install php-fpm php-cli php-common php-json php-pdo php-gd php-intl php-mbstring php-mysqlnd php-pdo php-opcache php-pecl-imagick php-soap php-xml php-xmlrpc
+
+mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.original
+
+mkdir /www/sockets
+
+
+systemctl enable httpd
+systemctl start httpd
+
+systemctl enable php-fpm
+systemctl start php-fpm

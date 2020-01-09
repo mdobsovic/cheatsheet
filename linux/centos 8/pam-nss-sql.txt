@@ -1,0 +1,46 @@
+CREATE TABLE groups (
+  group_id int(11) NOT NULL auto_increment primary key,
+  group_name varchar(30) DEFAULT '' NOT NULL,
+  status        char(1) DEFAULT 'A',
+  group_password varchar(64) DEFAULT 'x' NOT NULL,
+  gid int(11) NOT NULL
+);                                    
+
+INSERT INTO groups VALUES (1,'users','A','x',2000);
+
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user (
+  user_id int(11) NOT NULL auto_increment primary key,
+  user_name varchar(50) DEFAULT '' NOT NULL,
+  realname varchar(32) DEFAULT '' NOT NULL,
+  shell varchar(20) DEFAULT '/bin/sh' NOT NULL,
+  password varchar(40) DEFAULT '' NOT NULL,
+  status char(1) DEFAULT 'N' NOT NULL,
+  uid int(11) NOT NULL,
+  gid int(11) DEFAULT '65534' NOT NULL,
+  homedir varchar(32) DEFAULT '/bin/sh' NOT NULL,
+  lastchange varchar(50) NOT NULL default '',
+  min int(11) NOT NULL default '0',
+  max int(11) NOT NULL default '0',
+  warn int(11) NOT NULL default '7',
+  inact int(11) NOT NULL default '-1',
+  expire int(11) NOT NULL default '-1'                           
+);
+
+DROP TABLE IF EXISTS user_group;
+
+CREATE TABLE user_group (
+  user_id int(11) DEFAULT '0' NOT NULL,
+  group_id int(11) DEFAULT '0' NOT NULL
+);
+
+
+CREATE user 'nss_pam'@'localhost' IDENTIFIED BY 'password';
+CREATE user 'nss_pam_shadow'@'localhost' IDENTIFIED BY 'password2';
+GRANT SELECT(username,user_id,uid,gid,gecos,shell,homedir,status) ON `users` TO nss_pam@localhost;
+GRANT SELECT(name,group_id,gid,password,status) ON `groups` TO nss_pam@localhost;
+GRANT SELECT(username,gid) ON `grouplist` TO nss_pam@localhost;
+GRANT SELECT(username,password,user_id,uid,gid,gecos,shell,homedir,status,lstchg,min,max,warn,inact,expire,flag) ON `users` TO nss_pam_shadow@localhost;
+GRANT UPDATE(username,password,user_id,uid,gid,gecos,shell,homedir,status,lstchg,min,max,warn,inact,expire,flag) ON `users` TO nss_pam_shadow@localhost;
+FLUSH PRIVILEGES;
