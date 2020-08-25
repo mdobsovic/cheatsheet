@@ -1,0 +1,10 @@
+CREATE user 'nss_pam'@'localhost' IDENTIFIED BY 'asdf';
+CREATE user 'nss_pam_shadow'@'localhost' IDENTIFIED BY 'qwer';
+
+GRANT SELECT(username,user_id,uid,gid,gecos,shell,homedir,status) ON `users` TO nss_pam@localhost;
+GRANT SELECT(name,group_id,gid,password,status) ON `groups` TO nss_pam@localhost;
+GRANT SELECT(username,gid) ON `grouplist` TO nss_pam@localhost;
+GRANT SELECT(username,gid) ON `grouplist` TO nss_pam_shadow@localhost;
+GRANT SELECT(username,password,user_id,uid,gid,gecos,shell,homedir,status,lstchg,min,max,warn,inact,expire,flag) ON `users` TO nss_pam_shadow@localhost;
+GRANT UPDATE(username,password,user_id,uid,gid,gecos,shell,homedir,status,lstchg,min,max,warn,inact,expire,flag) ON `users` TO nss_pam_shadow@localhost;
+FLUSH PRIVILEGES;
