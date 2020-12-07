@@ -1,0 +1,2 @@
+Install-Module -Name PSPKI
+Convert-PfxToPem -InputFile C:\path\to\pfx\file.pfx -Outputfile C:\path\to\pem\file.pem
