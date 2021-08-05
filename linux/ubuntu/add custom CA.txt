@@ -1,0 +1,5 @@
+sudo mkdir /usr/share/ca-certificates/extra
+sudo cp foo.crt /usr/share/ca-certificates/extra/foo.crt
+sudo dpkg-reconfigure ca-certificates
+# To do this non-interactively, run:
+sudo update-ca-certificates

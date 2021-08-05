@@ -1,0 +1,5 @@
+cmd.exe as admin:
+
+netsh interface ipv4 show subinterfaces
+
+netsh interface ipv4 set subinterface "Ethernet" mtu=1200 store=persistent
