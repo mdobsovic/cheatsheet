@@ -1,0 +1,2 @@
+New-SelfSignedCertificate -DnsName obeclab.nakurze.sk -CertStoreLocation Cert:\LocalMachine\My -Provider "Microsoft Strong Cryptographic Provider" -KeyAlgorithm RSA -KeyLength 2048
+Get-ChildItem Cert:\LocalMachine\My\CERTIFICATEGUID | Export-PfxCertificate -FilePath C:\wamp64\bin\cert\lab.pfx -Password (ConvertTo-SecureString -AsPlainText Password1 -Force)

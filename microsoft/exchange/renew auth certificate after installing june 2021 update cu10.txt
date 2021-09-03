@@ -1,0 +1,19 @@
+# check existing certificate:
+(Get-AuthConfig).CurrentCertificateThumbprint | Get-ExchangeCertificate | Format-List
+
+# if it returns error, create and publish new certificate:
+New-ExchangeCertificate -KeySize 2048 -PrivateKeyExportable $true -SubjectName "cn=Microsoft Exchange Server Auth Certificate" -FriendlyName "Microsoft Exchange Server Auth Certificate" -DomainName @()
+
+Set-AuthConfig -NewCertificateThumbprint <ThumbprintFromStep1> -NewCertificateEffectiveDate (Get-Date)
+Set-AuthConfig -PublishCertificate
+Set-AuthConfig -ClearPreviousCertificate
+
+# restart Microsoft Exchange Service Host:
+Restart-Service MSExchangeServiceHost
+
+# restart WebAppPools or do iisreset:
+Restart-WebAppPool MSExchangeOWAAppPool
+Restart-WebAppPool MSExchangeECPAppPool
+
+
+## if it did not help, use existing cert: WMSVC-SHA2-<SERVERNAME>

@@ -1,0 +1,3 @@
+Ked nejde stahovat modul z PS Gallery (WARNING: Source Location 'https://www.powershellgallery.com/....' is not valid):
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
