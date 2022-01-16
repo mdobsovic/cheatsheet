@@ -1,0 +1,15 @@
+{
+  "require": {
+    "slim/slim": "^4.8",
+    "slim/psr7": "^1.4",
+    "nette/neon": "^3.2",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "php-di/slim-bridge": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "" : "class/"
+    }
+  }
+}
