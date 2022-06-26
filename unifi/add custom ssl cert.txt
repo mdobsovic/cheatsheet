@@ -1,0 +1,13 @@
+UniFi 7.1.66
+
+1. Generate SSL cert on CA
+2. convert pfx (with chain!) to pem
+3. split pem to key.txt and chain.txt
+4. convert key.txt via openssl rsa -in key.txt -out key.pem
+5. copy files to C:\Users\xxx\Ubiquiti Unifi\key.pem and chain.txt
+6. stop unifi controller service
+7. java -jar lib/ace.jar import_key_cert ket.pem chain.txt
+8. start unifi controller service
+
+If it does not work (HTTP 404), open website using IP address (https://xx.xx.xx.xx:8443), it should load.
+After that, restart unifi service and it should work using FQDN (https://unificontroller.adatum.com:8443)
