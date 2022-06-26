@@ -1,0 +1,26 @@
+SSO LOGIN na gateway
+1. pre SSO pri prihlaseni na gateway pridat https://adresa.gateway.tld do Local intranet zones
+2. mal by byt korektny SSL certifikat
+
+Kerberos delegacia pre pristup k serverom:
+
+Install-WindowsFeature RSAT-AD-PowerShell
+Import-Module ActiveDirectory
+
+# Host name of Windows Admin Center
+$wac = "VMM"
+
+# Server names and Cluster names that you want to manage with Windows Admin Center in your domain
+$servers = "FSRV01", "FSRV02", "AFS-CORE", "HCI-CLUSTER1"
+
+$wacobject = Get-ADComputer -Identity $wac
+foreach ($server in $servers)
+{
+$serverObject = Get-ADComputer -Identity $server
+Set-ADComputer -Identity $serverObject -PrincipalsAllowedToDelegateToAccount $wacobject -verbose
+}
+
+# Clear KDC Cache or wait ~15 minutes or restart $servers
+Invoke-Command -ComputerName $Servers -ScriptBlock {
+    klist purge -li 0x3e7
+}

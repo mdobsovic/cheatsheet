@@ -1,0 +1,70 @@
+*** KROK 1 ***
+
+[root@centos-8 ~]# ls /sys/class/scsi_disk/
+[root@centos-8 ~]# echo '1' > /sys/class/scsi_disk/0\:0\:0\:0/device/rescan
+
+[root@centos-8 ~]# parted /dev/sda
+(parted) u s
+(parted) p
+
+Number  Start     End        Size       Type     File system  Flags
+ 1      2048s     1050623s   1048576s   primary  ext4         boot
+ 2      1050624s  22022143s  20971520s  primary  ext4			<--- Note down the start sector number, this will be used in next step
+
+(parted) rm 2 <-- We will delete the root partition's entry. This will not impact the content of root partition and only partition table is modified. 
+Warning: Partition /dev/sda2 is being used. Are you sure you want to continue?
+Yes/No? Yes
+Error: Partition(s) 2 on /dev/sda have been written, but we have been unable to inform the kernel of the change, probably because
+it/they are in use.  As a result, the old partition(s) will remain in use.  You should reboot now before making further changes.
+Ignore/Cancel? Ignore  <-- If you reboot your server at this stage then you may end up with a broken node so don't reboot your node at this stage.
+(parted) p <-- Print the current partition table
+Model: ATA VBOX HARDDISK (scsi)
+Disk /dev/sda: 31457280s
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags:
+
+Number  Start  End       Size      Type     File system  Flags
+ 1      2048s  1050623s  1048576s  primary  ext4         boot
+
+(parted) mkpart <-- Now we will create root partition with new size
+Partition type?  primary/extended? primary
+File system type?  [ext2]? ext2 <-- hocico, to sa neskor zmeni
+Start? 1050624s  <-- Here give the start sector as it was earlier for root partition
+End? 24022143s  <-- Give the new end sector higher than the earlier value to resize root partition
+(parted) p  <-- Print the new partition table after you extend non lvm root partition
+Model: ATA VBOX HARDDISK (scsi)
+Disk /dev/sda: 31457280s
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags:
+
+Number  Start     End        Size       Type     File system  Flags
+ 1      2048s     1050623s   1048576s   primary  ext4         boot
+ 2      1050624s  24022143s  22971520s  primary  ext4         lba
+
+ (parted) toggle
+ Partition number? 2
+ Flag to Invert? lvm
+
+(parted) quit  <-- We are all done here
+Information: You may need to update /etc/fstab.
+
+[root@centos-8 ~]# reboot
+
+*** KROK 2 - NON-LVM ***
+resize2fs /dev/sda2
+
+*** KROK 2 - LVM ***
+
+pvresize /dev/sda2
+lvextend -L+20G /dev/myserver/mylogicalvolume
+lvextend -l +100%FREE /dev/myserver/mylogicalvolume
+resize2fs /dev/myserver/mylogicalvolume
+alebo
+xfs_growfs /dev/myserver/mylogicalvolume
+df -h
+
+On centos and fedora work with fsadm
+
+fsadm resize /dev/vg_name/root
