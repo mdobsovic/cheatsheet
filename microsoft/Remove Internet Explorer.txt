@@ -1,0 +1,4 @@
+dism /online /Disable-Feature /FeatureName:Internet-Explorer-Optional-amd64
+
+Get-WindowsOptionalFeature -Online -FeatureName Internet-Explorer-Optional-amd64
+Invoke-Command -ComputerName $comps -ScriptBlock {Get-WindowsOptionalFeature -Online -FeatureName Internet-Explorer-Optional-amd64} | Format-Table PSComputerName,DisplayName,State

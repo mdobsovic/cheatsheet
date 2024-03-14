@@ -1,0 +1,29 @@
+Ziskanie certifikatu cez haproxy:
+    certbot certonly --standalone -d <FQDN> --non-interactive --agree-tos --email <EMAIL_ADDRESS> --http-01-port=1234
+
+Force obnovy certifikatu:
+    certbot certonly --standalone -d <FQDN> --force-renewal --http-01-port=1234
+
+
+/etc/haproxy/haproxy.cfg:
+    frontend fe-wfe1
+        bind *:80
+        bind *:443 ssl crt /etc/ssl/xxxx/xxxx.pem
+
+        acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+        use_backend letsencrypt-backend if letsencrypt-acl
+
+        acl nejaka-webstranka-acl hdr(host) -i www.fqdn.tld
+        use_backend be-ssl_backend_s_vlastnou_ca_alebo_selfsigned_crt if nejaka-webstranka-acl
+
+        default_backend be-default
+
+    backend letsencrypt-backend
+        server letsencrypt 127.0.0.1:1234
+
+    backend be-default
+        server default 192.168.1.1:80 check
+        http-request redirect scheme https code 301 unless { ssl_fc }
+
+    backend be-ssl_backend_s_vlastnou_ca_alebo_selfsigned_crt
+        server webserver 192.168.1.1:443 check ssl verify none

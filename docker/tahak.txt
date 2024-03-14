@@ -1,0 +1,14 @@
+Install-Module DockerProvider -Force
+Install-Package Docker -Provider DockerProvider -Force
+Restart-Computer
+# Get-Service Docker ---> Running
+
+docker images
+docker search ...
+docker container run hello-world:nanoserver
+docker run -it microsoft/windowsservercore powershell
+docker run -it --isolation=hyperv microsoft/nanoserver cmd
+docker run -d -p 80:80 microsoft/iis:windowsservercore cmd
+
+docker ps
+docker stop ...

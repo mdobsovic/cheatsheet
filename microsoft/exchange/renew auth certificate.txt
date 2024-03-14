@@ -1,0 +1,22 @@
+https://www.alitajran.com/renew-microsoft-exchange-server-auth-certificate/
+
+1. Vygenerovat novy certifikat:
+New-ExchangeCertificate -KeySize 2048 -PrivateKeyExportable $true -SubjectName "cn=Microsoft Exchange Server Auth Certificate" -FriendlyName "Microsoft Exchange Server Auth Certificate" -DomainName @()
+
+2. Nastavit certifikat pre autentifikaciu (nahradit thumbprint):
+Set-AuthConfig -NewCertificateThumbprint "XXXXXXXXXXXXXXXXXXXXXX" -NewCertificateEffectiveDate (Get-Date)
+
+4. Zacat pouzivat certifikat 
+Set-AuthConfig -PublishCertificate
+
+5. Zmazat stary certifikat z konfiguracie
+Set-AuthConfig -ClearPreviousCertificate
+
+6. Restartovat potrebne sluzby:
+Restart-Service "MSExchangeServiceHost"
+iisreset
+
+7. Zmazat stary certifikat z pocitaca (napr. cez ECP)
+8. Pripadne znovu spustit Hybrid Configuration Wizard
+9. Verify Microsoft Exchange Server Auth Certificate validity
+https://www.alitajran.com/exchange-server-health-check-powershell-script/

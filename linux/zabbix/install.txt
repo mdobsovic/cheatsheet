@@ -1,0 +1,67 @@
+apt update
+apt install linux-azure
+reboot
+
+apt update
+apt upgrade
+reboot
+
+apt autoremove
+
+wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bubuntu22.04_all.deb
+dpkg -i zabbix-release_6.0-4+ubuntu22.04_all.deb
+apt update
+apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent -y
+
+apt install mariadb-server -y
+mysql_secure_installation
+mysql -uroot -p
+    create database zabbix character set utf8mb4 collate utf8mb4_bin;
+    create user zabbix@localhost identified by 'password';
+    grant all privileges on zabbix.* to zabbix@localhost;
+    set global log_bin_trust_function_creators = 1;
+    quit;
+
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
+mysql -uroot -p
+    set global log_bin_trust_function_creators = 0;
+    quit;
+
+vim /etc/zabbix/zabbix_server.conf
+# Set DBPassword=password
+
+
+a2enmod ssl
+
+vim /etc/apache2/sites-available/default-ssl.conf
+# Set: 
+# <VirtualHost *:443>
+# DocumentRoot /usr/share/zabbix
+# ServerName zabbix.itl.lan
+# SSLCertificateFile /etc/ssl/certs/zabbix.crt
+# SSLCertificateKeyFile /etc/ssl/private/zabbix.key
+
+a2ensite default-ssl
+
+vim /etc/apache2/sites-available/000-default.conf
+# Remove: 
+# DocumentRoot /usr/share/zabbix
+
+vim /etc/apache2/conf-enabled/zabbix.conf
+# Comment out:
+#<IfModule mod_alias.c>
+#    Alias /zabbix /usr/share/zabbix
+#</IfModule>
+
+systemctl restart zabbix-server zabbix-agent apache2
+systemctl enable zabbix-server zabbix-agent apache2
+
+# Add:
+ServerName zabbix.itl.lan
+Redirect permanent / https://zabbix.itl.lan/
+
+
+
+## Enjoy on http://host/zabbix
+## Username: Admin
+## Password: zabbix
