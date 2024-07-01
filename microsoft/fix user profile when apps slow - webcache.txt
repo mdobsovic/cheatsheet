@@ -1,0 +1,8 @@
+Delete files:
+
+- C:\Users\Default\AppData\Local\Microsoft\Windows\WebCacheLock.dat
+- C:\Users\Default\AppData\Local\Microsoft\Windows\WebCache
+- C:\Users\Default\AppData\Local\Microsoft\Windows\INetCache
+- C:\Users\Default\AppData\Local\Microsoft\Windows\INetCookies
+
+also delete the same files from users' profiles.

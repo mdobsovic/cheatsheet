@@ -1,0 +1,4 @@
+certreq -submit -attrib "CertificateTemplate:CertificateTemplateName"
+
+# instead of 12345 use RequestId from the previous command:
+certutil -retrieve 12345
