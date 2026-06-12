@@ -1,0 +1,8 @@
+{
+  "autoUpdatesChannel": "latest",
+  "theme": "dark",
+  "statusLine": {
+    "type": "command",
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/POUZIVATELSKE_MENO/.claude/statusline.ps1"
+  }
+}
