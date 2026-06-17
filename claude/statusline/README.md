@@ -48,6 +48,47 @@ V ceste opäť nezabudnite nahradiť `POUZIVATELSKE_MENO` za svoje používateľ
 
 Po reštarte Claude Code sa statusline zobrazí automaticky.
 
+## Linux / macOS (Bash verzia)
+
+Pre Linux a macOS je v tomto priečinku pripravený ekvivalentný skript **`statusline.sh`** s **úplne rovnakou funkcionalitou** ako `statusline.ps1` (rovnaký formát, rovnaké farby aj zaokrúhľovanie grafu).
+
+### 1. Závislosť: `jq`
+
+Bash verzia používa na čítanie JSON nástroj **`jq`**. Nainštalujte ho, ak ho ešte nemáte:
+
+```bash
+# Debian / Ubuntu
+sudo apt install jq
+# Fedora
+sudo dnf install jq
+# macOS (Homebrew)
+brew install jq
+```
+
+(Ak `jq` chýba, statusline sa nezrúti – zobrazí len text `Claude`.)
+
+### 2. Skript `statusline.sh`
+
+Skopírujte súbor `statusline.sh` do `~/.claude/statusline.sh` a nastavte mu právo na spustenie:
+
+```bash
+cp statusline.sh ~/.claude/statusline.sh
+chmod +x ~/.claude/statusline.sh
+```
+
+### 3. Nastavenie v `settings.json`
+
+Do svojho `~/.claude/settings.json` pridajte kľúč `statusLine`:
+
+```json
+"statusLine": {
+  "type": "command",
+  "command": "bash ~/.claude/statusline.sh"
+}
+```
+
+Po reštarte Claude Code sa statusline zobrazí automaticky.
+
 ## Video s presným postupom
 
 Celý postup – ako takýto statusline vyrobiť (skript v tomto priečinku je v podstate **výsledkom tohto videa**) a ako ho nahodiť do konzoly – je krok za krokom natočený vo videu **„Statusline v Claude Code“** v našej službe **VideoClass**:
