@@ -5,7 +5,7 @@ Tento priečinok obsahuje hotový **statusline** (stavový riadok) pre Claude Co
 ## Ako statusline vyzerá
 
 ```
-Opus 4.8 (1M context)  |  ctx ░░░░░░░░░░ 3% 34.3k/1M  |  in 34.3k  out 407  |  $0.31  |  5h 14% 3h10m  7d 34% 1d15h  |  git master
+Opus 4.8 (1M context)  |  ctx ░░░░░░░░░░ 3% 34.3k/1M  |  in 34.3k  out (last) 407  |  $0.31  |  5h 14% 3h10m  7d 34% 1d15h  |  ⎇ master
 ```
 
 Čo jednotlivé časti znamenajú:
@@ -14,10 +14,10 @@ Opus 4.8 (1M context)  |  ctx ░░░░░░░░░░ 3% 34.3k/1M  |  in 
 | --- | --- |
 | `Opus 4.8 (1M context)` | aktuálne použitý **model** |
 | `ctx ░░░░░░░░░░ 3% 34.3k/1M` | **obsadenosť kontextového okna** – grafický indikátor, percentá a absolútna hodnota (použité / veľkosť okna) |
-| `in 34.3k  out 407` | počet **vstupných (in)** a **výstupných (out)** tokenov |
+| `in 34.3k  out (last) 407` | počet **vstupných (in)** tokenov v kontexte a **výstupných (out)** tokenov; `out (last)` je počet tokenov **poslednej** odpovede Clauda (od Claude Code v2.1.132 pole `total_output_tokens` neukazuje kumulatívny súčet za session, ale len posledný turn) |
 | `$0.31` | **cena** aktuálnej session |
 | `5h 14% 3h10m  7d 34% 1d15h` | **využitie limitov** za 5 hodín a za 7 dní + koľko času zostáva do resetu |
-| `git master` | ak je aktuálny priečinok **git projekt**, zobrazí sa názov vetvy (branch) |
+| `⎇ master` | ak je aktuálny priečinok **git projekt**, zobrazí sa názov vetvy (branch) |
 
 Farba grafu a percent sa mení podľa obsadenosti: do 50 % zelená, 50–80 % oranžová, nad 80 % červená.
 
