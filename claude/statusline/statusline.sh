@@ -138,7 +138,7 @@ ctx_seg="$(col "$DIM" 'ctx ')$bar $(col "$ccode" "${ctx_pct_int}%") $(col "$DIM"
 parts+=("$ctx_seg")
 
 # ---- in / out tokens ----------------------------------------------------
-io_seg="$(col "$DIM" 'in ')$(col "$WHITE" "$(fmt "$ctx_in")")$(col "$DIM" '  out ')$(col "$WHITE" "$(fmt "$ctx_out")")"
+io_seg="$(col "$DIM" 'in ')$(col "$WHITE" "$(fmt "$ctx_in")")$(col "$DIM" '  out (last) ')$(col "$WHITE" "$(fmt "$ctx_out")")"
 parts+=("$io_seg")
 
 # ---- session cost -------------------------------------------------------
@@ -174,7 +174,7 @@ if [ -n "$dir" ]; then
       sha=$(git -C "$dir" rev-parse --short HEAD 2>/dev/null)
       if [ -n "$sha" ]; then branch="@$sha"; else branch="no-commits"; fi
     fi
-    parts+=("$(col "$MAGENTA" "git $branch")")
+    parts+=("$(col "$MAGENTA" "⎇ $branch")")
   fi
 fi
 

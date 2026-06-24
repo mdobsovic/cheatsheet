@@ -104,7 +104,7 @@ try {
   # ---- in / out tokens ------------------------------------------------
   $tin  = if ($cw) { $cw.total_input_tokens }  else { 0 }
   $tout = if ($cw) { $cw.total_output_tokens } else { 0 }
-  $ioSeg = (Col $DIM 'in ') + (Col $WHITE (Fmt $tin)) + (Col $DIM '  out ') + (Col $WHITE (Fmt $tout))
+  $ioSeg = (Col $DIM 'in ') + (Col $WHITE (Fmt $tin)) + (Col $DIM '  out (last) ') + (Col $WHITE (Fmt $tout))
   [void]$parts.Add($ioSeg)
 
   # ---- session cost ---------------------------------------------------
@@ -149,7 +149,8 @@ try {
           $sha = (& git -C "$dir" rev-parse --short HEAD 2>$null)
           if ($sha) { $branch = '@' + $sha.Trim() } else { $branch = 'no-commits' }
         }
-        [void]$parts.Add( (Col $MAGENTA ('git ' + $branch)) )
+        $gitIcon = ([string][char]0x2387)
+        [void]$parts.Add( (Col $MAGENTA ($gitIcon + ' ' + $branch)) )
       }
     } catch {}
   }
